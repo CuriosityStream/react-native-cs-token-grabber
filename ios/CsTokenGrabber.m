@@ -18,7 +18,7 @@ NSString *const CURSecureStoreLoggedInAccount = @"com.curiosity.CURSecureStoreLo
 
 @end
 
-@implementation SecureStore
+@implementation CsTokenGrabber
 RCT_EXPORT_MODULE();
 
 + (instancetype)shared {
