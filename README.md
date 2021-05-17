@@ -2,16 +2,19 @@
 
 ## Getting started
 
-`$ npm install react-native-cs-token-grabber --save`
+`$ yarn add react-native-cs-token-grabber`
 
-### Mostly automatic installation
+### Pod installation
 
-`$ react-native link react-native-cs-token-grabber`
+`$ cd ios && pod install && cd ..`
 
 ## Usage
+
 ```javascript
 import CsTokenGrabber from 'react-native-cs-token-grabber';
 
-// TODO: What to do with the module?
-CsTokenGrabber;
+// Get token
+const nativeToken = await CsTokenGrabber.authToken();
+// Delete token
+await CsTokenGrabber.deleteAuthToken();
 ```
