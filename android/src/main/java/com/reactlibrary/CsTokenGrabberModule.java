@@ -5,15 +5,21 @@ package com.reactlibrary;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
+import android.content.Context;
+import android.content.SharedPreferences;
 
 public class CsTokenGrabberModule extends ReactContextBaseJavaModule {
+    private static final String PREFERENCE_TAG = "_preferences";
+    private static final String USER_TOKEN = "user_token";
 
-    private final ReactApplicationContext reactContext;
+    private SharedPreferences sharedPreferences;
 
     public CsTokenGrabberModule(ReactApplicationContext reactContext) {
         super(reactContext);
-        this.reactContext = reactContext;
+        sharedPreferences = reactContext.getSharedPreferences(reactContext.getPackageName() + PREFERENCE_TAG, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -21,9 +27,26 @@ public class CsTokenGrabberModule extends ReactContextBaseJavaModule {
         return "CsTokenGrabber";
     }
 
+    private String getString(String key) {
+        return sharedPreferences.getString(key, null);
+    }
+
+    private Boolean deleteKey(String key) {
+        return sharedPreferences.edit().remove(key).commit();
+    }
+
     @ReactMethod
-    public void sampleMethod(String stringArgument, int numberArgument, Callback callback) {
-        // TODO: Implement some actually useful functionality
-        callback.invoke("Received numberArgument: " + numberArgument + " stringArgument: " + stringArgument);
+    public void authToken(Promise promise) {
+        try{
+            promise.resolve(getString(USER_TOKEN));
+        }catch (Exception e){
+            promise.reject("CsTokenGrabberError", e);
+        }
+    }
+
+    @ReactMethod
+    public  void deleteAuthToken(Promise promise) {
+        Boolean result = deleteKey(USER_TOKEN);
+        promise.resolve(result);
     }
 }
