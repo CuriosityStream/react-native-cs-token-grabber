@@ -1,6 +1,6 @@
 // main index.js
 
-import { NativeModules } from 'react-native';
+import { NativeModules } from "react-native";
 
 const { CsTokenGrabber } = NativeModules;
 
